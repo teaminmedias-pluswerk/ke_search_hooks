@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Christian Bülter (kennziffer.com) <buelter@kennziffer.com>
+ *  (c) 2012 Christian BÃ¼lter (kennziffer.com) <buelter@kennziffer.com>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -126,40 +126,42 @@ class user_kesearchhooks {
         *
         * @param   integer $filterUid uid of the filter as created in the backend
         * @param   array $options list of uids
+        * @param   tx_kesearch_lib $kesearch_lib caller class
         * @return  string
         * @author  Christian Buelter <buelter@kennziffer.com>
         * @since   Mon Jan 10 2011 14:46:57 GMT+0100
         */
-        public function customFilterRenderer($filterUid, $options, $kesearch_pi1) {
+        public function customFilterRenderer($filterUid, $options, tx_kesearch_lib $kesearch_lib) {
                 $filterSubpart = '###SUB_FILTER_SELECT###';
                 $optionSubpart = '###SUB_FILTER_SELECT_OPTION###';
 
                         // add standard option "all"
-                $optionsContent .= $kesearch_pi1->cObj->getSubpart($kesearch_pi1->templateCode,$optionSubpart);
-                $optionsContent = $kesearch_pi1->cObj->substituteMarker($optionsContent,'###TITLE###', $kesearch_pi1->filters[$filterUid]['title']);
-                $optionsContent = $kesearch_pi1->cObj->substituteMarker($optionsContent,'###VALUE###', '');
-                $optionsContent = $kesearch_pi1->cObj->substituteMarker($optionsContent,'###SELECTED###','');
+                $optionsContent .= $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode,$optionSubpart);
+				$filters = $kesearch_lib->filters->getFilters();
+                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###TITLE###', $filters[$filterUid]['title']);
+                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###VALUE###', '');
+                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###SELECTED###','');
 
                         // loop through options
                 if (is_array($options)) {
                         foreach ($options as $key => $data) {
-                                $optionsContent .= $kesearch_pi1->cObj->getSubpart($kesearch_pi1->templateCode, $optionSubpart);
-                                $optionsContent = $kesearch_pi1->cObj->substituteMarker($optionsContent,'###ONCLICK###', $kesearch_pi1->onclickFilter);
-                                $optionsContent = $kesearch_pi1->cObj->substituteMarker($optionsContent,'###TITLE###', $data['title']);
-                                $optionsContent = $kesearch_pi1->cObj->substituteMarker($optionsContent,'###VALUE###', $data['value']);
-                                $optionsContent = $kesearch_pi1->cObj->substituteMarker($optionsContent,'###SELECTED###', $data['selected'] ? ' selected="selected" ' : '');
+                                $optionsContent .= $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode, $optionSubpart);
+                                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###ONCLICK###', $kesearch_lib->onclickFilter);
+                                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###TITLE###', $data['title']);
+                                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###VALUE###', $data['value']);
+                                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###SELECTED###', $data['selected'] ? ' selected="selected" ' : '');
                                 $optionsCount++;
                         }
                 }
 
                         // fill markers
-                $filterContent = $kesearch_pi1->cObj->getSubpart($kesearch_pi1->templateCode, $filterSubpart);
-                $filterContent = $kesearch_pi1->cObj->substituteSubpart ($filterContent, $optionSubpart, $optionsContent, $recursive=1);
-                $filterContent = $kesearch_pi1->cObj->substituteMarker($filterContent,'###FILTERTITLE###', $kesearch_pi1->filters[$filterUid]['title']);
-                $filterContent = $kesearch_pi1->cObj->substituteMarker($filterContent,'###FILTERNAME###', 'tx_kesearch_pi1[filter]['.$filterUid.']');
-                $filterContent = $kesearch_pi1->cObj->substituteMarker($filterContent,'###FILTERID###', 'filter['.$filterUid.']');
-                $filterContent = $kesearch_pi1->cObj->substituteMarker($filterContent,'###ONCHANGE###', $kesearch_pi1->onclickFilter);
-                $filterContent = $kesearch_pi1->cObj->substituteMarker($filterContent,'###DISABLED###', $optionsCount > 0 ? '' : ' disabled="disabled" ');
+                $filterContent = $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode, $filterSubpart);
+                $filterContent = $kesearch_lib->cObj->substituteSubpart ($filterContent, $optionSubpart, $optionsContent, $recursive=1);
+                $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERTITLE###', $filters[$filterUid]['title']);
+                $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERNAME###', 'tx_kesearch_lib[filter]['.$filterUid.']');
+                $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERID###', 'filter['.$filterUid.']');
+                $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###ONCHANGE###', $kesearch_lib->onclickFilter);
+                $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###DISABLED###', $optionsCount > 0 ? '' : ' disabled="disabled" ');
 
                 return $filterContent;
         }

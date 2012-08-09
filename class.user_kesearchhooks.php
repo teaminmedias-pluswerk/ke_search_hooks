@@ -85,7 +85,7 @@ class user_kesearchhooks {
 					$content = strip_tags($record['description']);
 					$fullContent = $title . "\n" . $abstract . "\n" . $content;
 					$params = '&tx_ttnews[tt_news]=' . $record['uid'];
-					$tags = 'example_tag_1,example_tag_2';
+					$tags = '#example_tag_1#,#example_tag_2#';
 					$additionalFields = array(
 							'sortdate' => $record['crdate'],
 							'orig_uid' => $record['uid'],
@@ -144,21 +144,21 @@ class user_kesearchhooks {
 
                         // loop through options
                 if (is_array($options)) {
-                        foreach ($options as $key => $data) {
-                                $optionsContent .= $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode, $optionSubpart);
-                                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###ONCLICK###', $kesearch_lib->onclickFilter);
-                                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###TITLE###', $data['title']);
-                                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###VALUE###', $data['value']);
-                                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###SELECTED###', $data['selected'] ? ' selected="selected" ' : '');
-                                $optionsCount++;
-                        }
+					foreach ($options as $key => $data) {
+						$optionsContent .= $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode, $optionSubpart);
+							$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###ONCLICK###', $kesearch_lib->onclickFilter);
+							$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###TITLE###', $data['title']);
+							$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###VALUE###', $data['value']);
+							$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###SELECTED###', $data['selected'] ? ' selected="selected" ' : '');
+							$optionsCount++;
+					}
                 }
 
                         // fill markers
                 $filterContent = $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode, $filterSubpart);
                 $filterContent = $kesearch_lib->cObj->substituteSubpart ($filterContent, $optionSubpart, $optionsContent, $recursive=1);
                 $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERTITLE###', $filters[$filterUid]['title']);
-                $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERNAME###', 'tx_kesearch_lib[filter]['.$filterUid.']');
+                $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERNAME###', 'tx_kesearch_pi1[filter]['.$filterUid.']');
                 $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERID###', 'filter['.$filterUid.']');
                 $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###ONCHANGE###', $kesearch_lib->onclickFilter);
                 $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###DISABLED###', $optionsCount > 0 ? '' : ' disabled="disabled" ');

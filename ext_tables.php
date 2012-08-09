@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2012 Christian Bülter (kennziffer.com) <buelter@kennziffer.com>
+*  (c) 2012 Christian Bï¿½lter (kennziffer.com) <buelter@kennziffer.com>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,5 +28,7 @@ $GLOBALS['TCA']['tx_kesearch_filters']['columns']['rendertype']['config']['items
 	'Custom filter',
 	'customfilter'
 );
+
+$GLOBALS['TCA']['tx_kesearch_filters']['types']['customfilter'] = array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1;;1-1-1, title;;;;2-2-2, rendertype;;;;3-3-3, wrap;;;;4-4-4, options');
 
 ?>

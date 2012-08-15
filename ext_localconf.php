@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2012 Christian Bülter (kennziffer.com) <buelter@kennziffer.com>
+*  (c) 2012 Christian BÃ¼lter (kennziffer.com) <buelter@kennziffer.com>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,11 +25,18 @@
 if (!defined ("TYPO3_MODE")) die ("Access denied.");
 
 	// register custom indexer hook
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'][] = 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'][] = 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'][] 
+	= 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';
+
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'][]
+	= 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';
 
 	// register custom filter renderer hook
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer']
-	= array('EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks');
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'][]
+	= 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';
 
+	// register additional markers for search results
+	// (displays images of tt_news in this example)
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'][]
+	= 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';
 ?>

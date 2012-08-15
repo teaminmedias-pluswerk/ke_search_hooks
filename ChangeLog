@@ -1,8 +1,10 @@
-Current Trunk
-* adjusted the custom filter renderer example to work with the current version of ke_search 1.2.0.
+Version 1.1, August 2012
+* Needs ke_search version 1.2.0.
+* Adjusted the custom filter renderer example to work with the current version of ke_search 1.2.0.
+* Added example how to modify the result list. In this example images from news are displayed in the result list (hook "additionalResultMarker").
 
 Version 1.0
-* upgraded to version 1.0
+* upgraded version number to 1.0
 
 Version 0.0.1
 * initial version

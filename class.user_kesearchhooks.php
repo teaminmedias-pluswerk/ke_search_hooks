@@ -33,6 +33,53 @@
 
 class user_kesearchhooks {
 
+	/**
+	 * add marker to search results
+	 * display first image from tt_news search results
+	 * image will be added to the marker ###TEASER###
+	 * (you may add your own marker to the template and change that)
+	 * You may set the image width in the typoscript template like this:
+	 * ke_search_hooks.newsImageWidth = 100
+	 *
+	 * @param array $tempMarkerArray
+	 * @param array $row
+	 * @param tx_kesearch_lib $pObj
+	 */
+	public function additionalResultMarker(array &$tempMarkerArray, array $row, tx_kesearch_lib $pObj) {
+		$pathToImages = 'uploads/pics/';
+		$lcObj=t3lib_div::makeInstance('tslib_cObj');
+		$this->pObj = $pObj;
+
+		if ($row['type'] == 'tt_news') {
+
+				// get the image from the tt_news entry
+				// and replace marker ###NEWS_IMAGE###
+			$fields = 'image';
+			$table = 'tt_news';
+			$where = 'uid=' . $row['orig_uid'];
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields,$table,$where);
+			$resCount = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+			if ($resCount) {
+				$newsRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+				if ($newsRecord['image']) {
+					$images = explode(',', $newsRecord['image']);
+					$imageConf['file'] = $pathToImages . $images[0];
+					$imageConf['file.']['maxW'] = ($GLOBALS['TSFE']->tmpl->setup['ke_search_hooks.']['newsImageWidth'] ? $GLOBALS['TSFE']->tmpl->setup['ke_search_hooks.']['newsImageWidth'] : 50);
+					$imageConf['wrap'] = '<span class="kesearch_newsimage">|</span>';
+					$tempMarkerArray['teaser'] = $lcObj->IMAGE($imageConf) . $tempMarkerArray['teaser'];
+				} 
+			}
+		} 
+	}
+
+	/**
+	 * Adds the custom indexer to the TCA of indexer configurations, so that
+	 * it's selectable in the backend as an indexer type when you create a
+	 * new indexer configuration.
+	 *
+	 * @param array $params
+	 * @param type $pObj
+	 */
 	function registerIndexerConfiguration(&$params, $pObj) {
 
 			// add item to "type" field
@@ -121,49 +168,49 @@ class user_kesearchhooks {
 		}
 	}
 
-		/**
-        * Custom Filter Renderer
-        *
-        * @param   integer $filterUid uid of the filter as created in the backend
-        * @param   array $options list of uids
-        * @param   tx_kesearch_lib $kesearch_lib caller class
-        * @return  string
-        * @author  Christian Buelter <buelter@kennziffer.com>
-        * @since   Mon Jan 10 2011 14:46:57 GMT+0100
-        */
-        public function customFilterRenderer($filterUid, $options, tx_kesearch_lib $kesearch_lib) {
-                $filterSubpart = '###SUB_FILTER_SELECT###';
-                $optionSubpart = '###SUB_FILTER_SELECT_OPTION###';
+	/**
+	* Custom Filter Renderer
+	*
+	* @param   integer $filterUid uid of the filter as created in the backend
+	* @param   array $options list of uids
+	* @param   tx_kesearch_lib $kesearch_lib caller class
+	* @return  string
+	* @author  Christian Buelter <buelter@kennziffer.com>
+	* @since   Mon Jan 10 2011 14:46:57 GMT+0100
+	*/
+	public function customFilterRenderer($filterUid, $options, tx_kesearch_lib $kesearch_lib) {
+		$filterSubpart = '###SUB_FILTER_SELECT###';
+		$optionSubpart = '###SUB_FILTER_SELECT_OPTION###';
 
-                        // add standard option "all"
-                $optionsContent .= $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode,$optionSubpart);
-				$filters = $kesearch_lib->filters->getFilters();
-                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###TITLE###', $filters[$filterUid]['title']);
-                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###VALUE###', '');
-                $optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###SELECTED###','');
+			// add standard option "all"
+		$optionsContent .= $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode, $optionSubpart);
+		$filters = $kesearch_lib->filters->getFilters();
+		$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###TITLE###', $filters[$filterUid]['title']);
+		$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###VALUE###', '');
+		$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###SELECTED###','');
 
-                        // loop through options
-                if (is_array($options)) {
-					foreach ($options as $key => $data) {
-						$optionsContent .= $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode, $optionSubpart);
-							$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###ONCLICK###', $kesearch_lib->onclickFilter);
-							$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###TITLE###', $data['title']);
-							$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###VALUE###', $data['value']);
-							$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###SELECTED###', $data['selected'] ? ' selected="selected" ' : '');
-							$optionsCount++;
-					}
-                }
+			// loop through options
+		if (is_array($options)) {
+			foreach ($options as $key => $data) {
+				$optionsContent .= $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode, $optionSubpart);
+					$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###ONCLICK###', $kesearch_lib->onclickFilter);
+					$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###TITLE###', $data['title']);
+					$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###VALUE###', $data['value']);
+					$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###SELECTED###', $data['selected'] ? ' selected="selected" ' : '');
+					$optionsCount++;
+			}
+		}
 
-                        // fill markers
-                $filterContent = $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode, $filterSubpart);
-                $filterContent = $kesearch_lib->cObj->substituteSubpart ($filterContent, $optionSubpart, $optionsContent, $recursive=1);
-                $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERTITLE###', $filters[$filterUid]['title']);
-                $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERNAME###', 'tx_kesearch_pi1[filter]['.$filterUid.']');
-                $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERID###', 'filter['.$filterUid.']');
-                $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###ONCHANGE###', $kesearch_lib->onclickFilter);
-                $filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###DISABLED###', $optionsCount > 0 ? '' : ' disabled="disabled" ');
+			// fill markers
+		$filterContent = $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode, $filterSubpart);
+		$filterContent = $kesearch_lib->cObj->substituteSubpart ($filterContent, $optionSubpart, $optionsContent, $recursive=1);
+		$filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERTITLE###', $filters[$filterUid]['title']);
+		$filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERNAME###', 'tx_kesearch_pi1[filter]['.$filterUid.']');
+		$filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###FILTERID###', 'filter['.$filterUid.']');
+		$filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###ONCHANGE###', $kesearch_lib->onclickFilter);
+		$filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###DISABLED###', $optionsCount > 0 ? '' : ' disabled="disabled" ');
 
-                return $filterContent;
-        }
+		return $filterContent;
+	}
 }
 ?>

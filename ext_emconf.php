@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Faceted Search Hooks Example',
-	'description' => 'Hooks example for ke_search. Feel free to use this as a kickstarter for your own custom indexer or hooks. Implements a news indexer as example.',
+	'description' => 'Hooks example for ke_search. Feel free to use this as a kickstarter for your own custom indexer or hooks. Implements a news indexer as example. Displays images from tt_news in the result list.',
 	'category' => 'backend',
 	'shy' => 0,
 	'version' => '1.0.0',
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance_note' => '',
 	'constraints' => array(
 		'depends' => array(
-			'ke_search' => '',
+			'ke_search' => '1.2.0',
 		),
 		'conflicts' => array(
 		),

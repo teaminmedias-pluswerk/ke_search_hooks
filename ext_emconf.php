@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Hooks example for ke_search. Feel free to use this as a kickstarter for your own custom indexer or hooks. Implements a news indexer as example. Displays images from tt_news in the result list.',
 	'category' => 'backend',
 	'shy' => 0,
-	'version' => '1.1.0',
+	'version' => '1.2.0',
 	'dependencies' => 'ke_search',
 	'conflicts' => '',
 	'priority' => '',
@@ -34,7 +34,9 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance_note' => '',
 	'constraints' => array(
 		'depends' => array(
-			'ke_search' => '1.2.0',
+			'ke_search' => '1.7.0',
+		    'php' => '5.3.0-0.0.0',
+		    'typo3' => '6.2.0-6.2.99',
 		),
 		'conflicts' => array(
 		),

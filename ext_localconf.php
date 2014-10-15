@@ -36,7 +36,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'][]
 	= 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';
 
 	// register additional markers for search results
-	// (displays images of tt_news in this example)
+	// (displays images of tt_news and news in this example)
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'][]
 	= 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';
 ?>

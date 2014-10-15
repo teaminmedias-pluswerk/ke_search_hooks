@@ -1,3 +1,7 @@
+Version 1.2, October 2014
+* task: Set compatibility to TYPO3 6.2.
+* task: add demo of image rendering for ext:news search results.
+
 Version 1.1, August 2012
 * Needs ke_search version 1.2.0.
 * Adjusted the custom filter renderer example to work with the current version of ke_search 1.2.0.

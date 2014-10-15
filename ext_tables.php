@@ -23,7 +23,6 @@
 ***************************************************************/
 
 	// add new custom filter renderer
-t3lib_div::loadTCA('tx_kesearch_filters');
 $GLOBALS['TCA']['tx_kesearch_filters']['columns']['rendertype']['config']['items'][] = array (
 	'Custom filter',
 	'customfilter'

@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Christian Bülter (kennziffer.com) <buelter@kennziffer.com>
+ *  (c) 2012-2014 Christian Bülter (kennziffer.com) <buelter@kennziffer.com>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,6 +29,8 @@
  * Please use it as a kickstarter for your own extensions.
  * It implements a simple indexer for tt_news (although
  * there's already one implemented in ke_search itself).
+ * And it shows how to add more information to your result list,
+ * in this case images to ext:tt_news and ext:news results.
  ***************************************************************/
 
 class user_kesearchhooks {
@@ -51,9 +53,7 @@ class user_kesearchhooks {
 		$this->pObj = $pObj;
 
 		if ($row['type'] == 'tt_news') {
-
-				// get the image from the tt_news entry
-				// and replace marker ###NEWS_IMAGE###
+			// get the image from the tt_news entry and add it to the teaser
 			$fields = 'image';
 			$table = 'tt_news';
 			$where = 'uid=' . $row['orig_uid'];
@@ -69,8 +69,64 @@ class user_kesearchhooks {
 					$tempMarkerArray['teaser'] = $lcObj->IMAGE($imageConf) . $tempMarkerArray['teaser'];
 				} 
 			}
-		} 
+		}
+
+		if ($row['type'] == 'news') {
+				// get the image from the news entry and add it to the teaser
+				$tempMarkerArray['teaser'] = $this->getNewsImage($row['orig_uid']) . $tempMarkerArray['teaser'];
+		}
 	}
+
+
+	/*
+	 * get news media file
+	 * @param int $newsUid
+	 * @return string $file / empty
+	 */
+	protected function getNewsImage($newsUid) {
+		$fields = 'identifier';
+		$table = 'sys_file_reference, sys_file';
+		$where = 'tablenames = "tx_news_domain_model_news"';
+		$where .= ' AND fieldname = "fal_media"';
+		$where .= ' AND uid_foreign = ' . intval($newsUid);
+		$where .= ' AND uid_local = sys_file.uid';
+		$where .= $this->pObj->cObj->enableFields('sys_file_reference');
+		$where .= $this->pObj->cObj->enableFields('sys_file');
+		$groupBy = '';
+		$orderBy = '';
+		$limit = 1;
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where, $groupBy, $orderBy, $limit);
+
+		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			return $this->renderImage($row['identifier']);
+		} else {
+			return '';
+		}
+	}
+
+
+	/**
+	 * render the image tag
+	 *
+	 * @param string $imagePath
+	 * @return string
+	 */
+	protected function renderImage($imagePath) {
+		if ($imagePath != '') {
+			$myCObj = new tslib_cObj();
+
+			$imgTSConfig['file'] = 'fileadmin' . $imagePath;
+			$imgTSConfig['file.']['maxW'] = '150';
+			$imgTSConfig['file.']['maxH'] = '150';
+			$imgTSConfig['altText'] = 'Bild';
+
+			$imageCode = '<div class="ke_search_image">'.$myCObj->IMAGE($imgTSConfig).'</div>';
+
+			return $imageCode;
+		}
+	}
+
 
 	/**
 	 * Adds the custom indexer to the TCA of indexer configurations, so that
@@ -107,11 +163,11 @@ class user_kesearchhooks {
 		if($indexerConfig['type'] == 'customnews') {
 			$content = '';
 
-				// get all the entries to index
-				// don't index hidden or deleted elements, BUT
-				// get the elements with frontend user group access restrictions
-				// or time (start / stop) restrictions.
-				// Copy those restrictions to the index.
+			// get all the entries to index
+			// don't index hidden or deleted elements, BUT
+			// get the elements with frontend user group access restrictions
+			// or time (start / stop) restrictions.
+			// Copy those restrictions to the index.
 			$fields = '*';
 			$table = 'tt_news';
 			$where = 'pid IN (' . $indexerConfig['sysfolder'] . ') AND hidden = 0 AND deleted = 0';
@@ -125,8 +181,8 @@ class user_kesearchhooks {
 			if($resCount) {
 				while ( ($record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) ) {
 
-						// compile the information which should go into the index
-						// the field names depend on the table you want to index!
+					// compile the information which should go into the index
+					// the field names depend on the table you want to index!
 					$title = strip_tags($record['title']);
 					$abstract = strip_tags($record['short']);
 					$content = strip_tags($record['description']);
@@ -134,11 +190,11 @@ class user_kesearchhooks {
 					$params = '&tx_ttnews[tt_news]=' . $record['uid'];
 					$tags = '#example_tag_1#,#example_tag_2#';
 					$additionalFields = array(
-							'sortdate' => $record['crdate'],
-							'orig_uid' => $record['uid'],
-							'orig_pid' => $record['pid'],
-							'sortdate' => $record['datetime'],
-							);
+						'sortdate' => $record['crdate'],
+						'orig_uid' => $record['uid'],
+						'orig_pid' => $record['pid'],
+						'sortdate' => $record['datetime'],
+					);
 
 						// add something to the title, just to identify the entries
 						// in the frontend
@@ -194,7 +250,7 @@ class user_kesearchhooks {
 			foreach ($options as $key => $data) {
 				$optionsContent .= $kesearch_lib->cObj->getSubpart($kesearch_lib->templateCode, $optionSubpart);
 					$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###ONCLICK###', $kesearch_lib->onclickFilter);
-					$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###TITLE###', $data['title']);
+					$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###TITLE###', 'CUSTOM: ' . $data['title']);
 					$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###VALUE###', $data['value']);
 					$optionsContent = $kesearch_lib->cObj->substituteMarker($optionsContent,'###SELECTED###', $data['selected'] ? ' selected="selected" ' : '');
 					$optionsCount++;

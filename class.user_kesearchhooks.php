@@ -102,9 +102,7 @@ class user_kesearchhooks {
                 $imgConf['file.']['width'] = '80';
                 $imgConf['params'] = 'style="float: left; margin-right: 15px"';
 				$imageHtml = $this->pObj->cObj->IMAGE($imgConf);
-                //$tempMarkerArray['image'] =  $imageHtml . $tempMarkerArray['image'];
                 $tempMarkerArray['teaser'] =  $imageHtml . $tempMarkerArray['teaser'];
-				debug($page['media']);
             }
 			 *
 			 */

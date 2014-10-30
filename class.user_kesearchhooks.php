@@ -34,6 +34,7 @@
  ***************************************************************/
 
 class user_kesearchhooks {
+	var $imageSize = array('width' => 150, 'height' => 150);
 
 	/**
 	 * add marker to search results
@@ -48,11 +49,13 @@ class user_kesearchhooks {
 	 * @param tx_kesearch_lib $pObj
 	 */
 	public function additionalResultMarker(array &$tempMarkerArray, array $row, tx_kesearch_lib $pObj) {
-		$pathToImages = 'uploads/pics/';
-		$lcObj=t3lib_div::makeInstance('tslib_cObj');
 		$this->pObj = $pObj;
 
+		// display news image (tt_news)
 		if ($row['type'] == 'tt_news') {
+			$pathToImages = 'uploads/pics/';
+			$lcObj = t3lib_div::makeInstance('tslib_cObj');
+
 			// get the image from the tt_news entry and add it to the teaser
 			$fields = 'image';
 			$table = 'tt_news';
@@ -71,23 +74,55 @@ class user_kesearchhooks {
 			}
 		}
 
+		// display news image (ext:news with FAL)
+		// get the image from the news entry and add it to the teaser
 		if ($row['type'] == 'news') {
-				// get the image from the news entry and add it to the teaser
-				$tempMarkerArray['teaser'] = $this->getNewsImage($row['orig_uid']) . $tempMarkerArray['teaser'];
+			$tempMarkerArray['teaser'] = $this->getImage($row['orig_uid'], 'tx_news_domain_model_news', 'fal_media') . $tempMarkerArray['teaser'];
+		}
+
+
+		// display page image (from page properties -> resources -> media using FAL)
+		if($row['type'] == 'page') {
+			$tempMarkerArray['teaser'] = $this->getImage($row['orig_uid'], 'pages', 'media') . $tempMarkerArray['teaser'];
+
+			// old style (without using FAL):
+			/*
+			// get media entry
+            $page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+                'media',
+                'pages',
+                '1=1' .
+                ' AND uid=' . $row['orig_uid']
+            );
+
+            // process only if media is not empty
+            if(!empty($page['media'])) {
+                $files = t3lib_div::trimExplode(',', $page['media']);
+                $imgConf['file'] = 'uploads/media/' . $files[0];
+                $imgConf['file.']['width'] = '80';
+                $imgConf['params'] = 'style="float: left; margin-right: 15px"';
+				$imageHtml = $this->pObj->cObj->IMAGE($imgConf);
+                //$tempMarkerArray['image'] =  $imageHtml . $tempMarkerArray['image'];
+                $tempMarkerArray['teaser'] =  $imageHtml . $tempMarkerArray['teaser'];
+				debug($page['media']);
+            }
+			 *
+			 */
 		}
 	}
 
 
 	/*
-	 * get news media file
+	 * get fal media file
 	 * @param int $newsUid
+	 * @param string $tablenames
 	 * @return string $file / empty
 	 */
-	protected function getNewsImage($newsUid) {
-		$fields = 'identifier';
+	protected function getImage($newsUid, $tablenames, $fieldname) {
+		$fields = 'identifier,alternative';
 		$table = 'sys_file_reference, sys_file';
-		$where = 'tablenames = "tx_news_domain_model_news"';
-		$where .= ' AND fieldname = "fal_media"';
+		$where = 'tablenames = "' . $tablenames . '"';
+		$where .= ' AND fieldname = "' . $fieldname . '"';
 		$where .= ' AND uid_foreign = ' . intval($newsUid);
 		$where .= ' AND uid_local = sys_file.uid';
 		$where .= $this->pObj->cObj->enableFields('sys_file_reference');
@@ -99,7 +134,7 @@ class user_kesearchhooks {
 
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			return $this->renderImage($row['identifier']);
+			return $this->renderImage($row['identifier'], $row['alternative']);
 		} else {
 			return '';
 		}
@@ -112,14 +147,14 @@ class user_kesearchhooks {
 	 * @param string $imagePath
 	 * @return string
 	 */
-	protected function renderImage($imagePath) {
+	protected function renderImage($imagePath, $altText = '') {
 		if ($imagePath != '') {
 			$myCObj = new tslib_cObj();
 
 			$imgTSConfig['file'] = 'fileadmin' . $imagePath;
-			$imgTSConfig['file.']['maxW'] = '150';
-			$imgTSConfig['file.']['maxH'] = '150';
-			$imgTSConfig['altText'] = 'Bild';
+			$imgTSConfig['file.']['maxW'] = $this->imageSize['width'];
+			$imgTSConfig['file.']['maxH'] = $this->imageSize['height'];
+			$imgTSConfig['altText'] = $altText;
 
 			$imageCode = '<div class="ke_search_image">'.$myCObj->IMAGE($imgTSConfig).'</div>';
 

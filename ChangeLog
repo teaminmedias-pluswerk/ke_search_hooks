@@ -1,4 +1,5 @@
-Version 1.2.1
+Version 1.2.1, October 2014
+* feature: show images from pages set in page properties -> resources -> media (using FAL reference).
 
 Version 1.2, October 2014
 * task: Set compatibility to TYPO3 6.2.
@@ -7,7 +8,7 @@ Version 1.2, October 2014
 Version 1.1, August 2012
 * Needs ke_search version 1.2.0.
 * Adjusted the custom filter renderer example to work with the current version of ke_search 1.2.0.
-* Added example how to modify the result list. In this example images from news are displayed in the result list (hook "additionalResultMarker").
+* Added example how to modify the result list. In this example images from news (tt_news) are displayed in the result list (hook "additionalResultMarker").
 
 Version 1.0
 * upgraded version number to 1.0

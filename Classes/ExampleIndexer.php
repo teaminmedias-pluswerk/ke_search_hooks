@@ -1,10 +1,13 @@
 <?php
+// set you own vendor name adjust the extension name part of the namespace to your extension key
 namespace TeaminmediasPluswerk\KeSearchHooks;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
+// set you own class name
 class ExampleIndexer
 {
+    // Set a key for your indexer configuration.
     // Add this in Configuration/TCA/Overrides/tx_kesearch_indexerconfig.php, too!
     protected $indexerConfigurationKey = 'customindexer';
 
@@ -18,8 +21,7 @@ class ExampleIndexer
      */
     public function registerIndexerConfiguration(&$params, $pObj)
     {
-
-        // add item to "type" field
+        // Set a name and an icon for your indexer.
         $customIndexer = array(
             '[CUSTOM] News-Indexer (ext:news)',
             $this->indexerConfigurationKey,

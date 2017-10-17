@@ -1,6 +1,7 @@
 Version 2.0.0, October 2017
 [FEATURE] Make extension compatible to TYPO3 8
-[FEATURE] Add example for custum indexer as a namespaced class
+[FEATURE] Add example for custom indexer as a namespaced class
+[TASK]    remove examples for additional result list marker and custom filter renderer, since they do not work with the current version of ke_search (2.6.0).
 
 Version 1.2.2
 

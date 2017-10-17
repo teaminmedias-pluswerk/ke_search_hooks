@@ -11,6 +11,9 @@ ke_search_hooks
 ===============
 
 ke_search_hooks contains an example for a custom indexer.
+
+It indexes records from the extension "News" (ext:news).
+
 Please feel free to use it as a kickstarter for your own indexer.
 
 See https://www.typo3-macher.de/en/facettierte-suche-ke-search/dokumentation/ein-eigener-indexer/

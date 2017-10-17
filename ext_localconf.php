@@ -22,6 +22,8 @@ if (!defined("TYPO3_MODE")) {
 }
 
 // register custom indexer hook
+// adjust this to your namespace and class name
+// adjust the autoloading information in composer.json, too!
 $customIndexerClassName = 'TeaminmediasPluswerk\KeSearchHooks\ExampleIndexer';
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'][] = $customIndexerClassName;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'][] = $customIndexerClassName;

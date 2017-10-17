@@ -25,20 +25,3 @@ if (!defined("TYPO3_MODE")) {
 $customIndexerClassName = 'TeaminmediasPluswerk\KeSearchHooks\ExampleIndexer';
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'][] = $customIndexerClassName;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'][] = $customIndexerClassName;
-
-//$_procObj = &TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
-//$_procObj->debugTest;
-
-//$debugTest = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TeaminmediasPluswerk\KeSearchHooks\ExampleIndexer::class);
-//$debugTest->debugTest();
-
-/*
-// register custom filter renderer hook
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'][]
-    = 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';
-
-// register additional markers for search results
-// (displays images of tt_news and news in this example)
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'][]
-    = 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';
-*/

@@ -1,17 +1,12 @@
 <?php
 namespace TeaminmediasPluswerk\KeSearchHooks;
 
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 class ExampleIndexer
 {
-    protected $indexerConfigurationKey = 'customnews';
-
-    public function debugTest()
-    {
-        DebugUtility::debug('test');
-    }
+    // Add this in Configuration/TCA/Overrides/tx_kesearch_indexerconfig.php, too!
+    protected $indexerConfigurationKey = 'customindexer';
 
     /**
      * Adds the custom indexer to the TCA of indexer configurations, so that
@@ -26,15 +21,11 @@ class ExampleIndexer
 
         // add item to "type" field
         $customIndexer = array(
-            'Custom news indexer',
+            '[CUSTOM] News-Indexer (ext:news)',
             $this->indexerConfigurationKey,
             ExtensionManagementUtility::extRelPath('ke_search_hooks') . 'customnews-indexer-icon.gif'
         );
         $params['items'][] = $customIndexer;
-
-        // enable "sysfolder" field
-        $GLOBALS['TCA']['tx_kesearch_indexerconfig']['columns']['sysfolder']['displayCond']
-            .= ',' . $this->indexerConfigurationKey;
     }
 
 
@@ -56,7 +47,7 @@ class ExampleIndexer
             // get the elements with frontend user group access restrictions
             // or time (start / stop) restrictions, in order to copy those restrictions to the index.
             $fields = '*';
-            $table = 'tt_news';
+            $table = 'tx_news_domain_model_news';
             $where = 'pid IN (' . $indexerConfig['sysfolder'] . ') AND hidden = 0 AND deleted = 0';
             $groupBy = '';
             $orderBy = '';
@@ -71,13 +62,14 @@ class ExampleIndexer
                     // compile the information which should go into the index
                     // the field names depend on the table you want to index!
                     $title      = strip_tags($record['title']);
-                    $abstract   = strip_tags($record['short']);
-                    $content    = strip_tags($record['description']);
+                    $abstract   = strip_tags($record['teaser']);
+                    $content    = strip_tags($record['bodytext']);
 
                     $fullContent = $title . "\n" . $abstract . "\n" . $content;
 
-                    // Link to the single page
-                    $params = '&tx_ttnews[tt_news]=' . $record['uid'];
+                    // Link to detail view
+                    $params = '&tx_news_pi1[news]=' . $record['uid']
+                        . '&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail';
 
                     // Tags
                     // If you youse Sphinx, use "_" instead of "#" (configurable in the extension manager)

@@ -1,7 +1,8 @@
-Version 2.0.0
+Version 2.0.0, October 2017
+[FEATURE] Make extension compatible to TYPO3 8
+[FEATURE] Add example for custum indexer as a namespaced class
 
 Version 1.2.2
-...
 
 Version 1.2.1, October 2014
 * feature: show images from pages set in page properties -> resources -> media (using FAL reference).

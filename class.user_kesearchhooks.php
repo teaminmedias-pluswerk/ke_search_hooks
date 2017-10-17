@@ -33,8 +33,18 @@
  * in this case images to ext:tt_news and ext:news results.
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class user_kesearchhooks {
-	var $imageSize = array('width' => 150, 'height' => 150);
+	/**
+	 * needed to get all recursive pids
+	 *
+	 * @var \TYPO3\CMS\Core\Database\QueryGenerator
+	 */
+	protected $queryGen;
+
+	protected var $imageSize = array('width' => 150, 'height' => 150);
 
 	/**
 	 * add marker to search results
@@ -84,33 +94,11 @@ class user_kesearchhooks {
 		// display page image (from page properties -> resources -> media using FAL)
 		if($row['type'] == 'page') {
 			$tempMarkerArray['teaser'] = $this->getImage($row['orig_uid'], 'pages', 'media') . $tempMarkerArray['teaser'];
-
-			// old style (without using FAL):
-			/*
-			// get media entry
-            $page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-                'media',
-                'pages',
-                '1=1' .
-                ' AND uid=' . $row['orig_uid']
-            );
-
-            // process only if media is not empty
-            if(!empty($page['media'])) {
-                $files = t3lib_div::trimExplode(',', $page['media']);
-                $imgConf['file'] = 'uploads/media/' . $files[0];
-                $imgConf['file.']['width'] = '80';
-                $imgConf['params'] = 'style="float: left; margin-right: 15px"';
-				$imageHtml = $this->pObj->cObj->IMAGE($imgConf);
-                $tempMarkerArray['teaser'] =  $imageHtml . $tempMarkerArray['teaser'];
-            }
-			 *
-			 */
 		}
 	}
 
 
-	/*
+	/**
 	 * get fal media file
 	 * @param int $newsUid
 	 * @param string $tablenames
@@ -169,18 +157,14 @@ class user_kesearchhooks {
 	 * @param array $params
 	 * @param type $pObj
 	 */
-	function registerIndexerConfiguration(&$params, $pObj) {
-
-			// add item to "type" field
+	public function registerIndexerConfiguration(&$params, $pObj) {
+		// add item to "type" field
 		$newArray = array(
-				'Custom news indexer',
-				'customnews',
-				t3lib_extMgm::extRelPath('ke_search_hooks') . 'customnews-indexer-icon.gif'
-				);
+			'Custom news indexer',
+			'customnews',
+			ExtensionManagementUtility::extRelPath('ke_search_hooks') . 'customnews-indexer-icon.gif'
+		);
 		$params['items'][] = $newArray;
-
-			// enable "sysfolder" field
-		$GLOBALS['TCA']['tx_kesearch_indexerconfig']['columns']['sysfolder']['displayCond'] .= ',customnews';
 	}
 
 	/**
@@ -203,7 +187,9 @@ class user_kesearchhooks {
 			// Copy those restrictions to the index.
 			$fields = '*';
 			$table = 'tt_news';
-			$where = 'pid IN (' . $indexerConfig['sysfolder'] . ') AND hidden = 0 AND deleted = 0';
+			// get the pages from where to index the records
+			$indexPids = $this->getPidList($indexerConfig['startingpoints_recursive'], $indexerConfig['sysfolder']);
+			$where = 'pid IN (' . implode(',', $indexPids) . ') AND hidden = 0 AND deleted = 0';
 			$groupBy = '';
 			$orderBy = '';
 			$limit = '';
@@ -226,7 +212,6 @@ class user_kesearchhooks {
 						'sortdate' => $record['crdate'],
 						'orig_uid' => $record['uid'],
 						'orig_pid' => $record['pid'],
-						'sortdate' => $record['datetime'],
 					);
 
 						// add something to the title, just to identify the entries
@@ -300,6 +285,28 @@ class user_kesearchhooks {
 		$filterContent = $kesearch_lib->cObj->substituteMarker($filterContent,'###DISABLED###', $optionsCount > 0 ? '' : ' disabled="disabled" ');
 
 		return $filterContent;
+	}
+
+	/**
+	 * Get complete list of Pids from single pages and recursive
+	 *
+	 * @param   string $startingPointsRecursive uid of the filter as created in the backend
+	 * @param   string $singlePages list of uids
+	 * @return  string
+	 * @author  Henrik Ziegenhain <henrik@ziegenhain.me>
+	 */
+	protected function getPidList($startingPointsRecursive = '', $singlePages = '') {
+		$this->queryGen = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryGenerator');
+		$pidsRecursive = GeneralUtility::trimExplode(',', $startingPointsRecursive, true);
+		$pidsNonRecursive = GeneralUtility::trimExplode(',', $singlePages, true);
+		$pageList = '';
+		foreach ($pidsRecursive as $pid) {
+			$pageList .= $this->queryGen->getTreeList($pid, 99, 0, '1=1') . ',';
+		}
+		foreach ($pidsNonRecursive as $pid) {
+			$pageList .= $pid . ',';
+		}
+		return GeneralUtility::trimExplode(',', $pageList, true);
 	}
 }
 ?>

@@ -1,5 +1,10 @@
 {
   "name": "teaminmedias-pluswerk/ke_search_hooks",
   "type": "typo3-cms-extension",
-  "description": "Hooks example for ke_search. Feel free to use this as a kickstarter for your own custom indexer or hooks."
+  "description": "Hooks example for ke_search. Feel free to use this as a kickstarter for your own custom indexer or hooks.",
+  "autoload": {
+    "psr-4": {
+      "TeaminmediasPluswerk\\KeSearchHooks\\": "Classes"
+    }
+  }
 }

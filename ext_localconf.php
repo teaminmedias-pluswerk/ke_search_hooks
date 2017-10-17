@@ -21,14 +21,18 @@ if (!defined("TYPO3_MODE")) {
     die("Access denied.");
 }
 
-/*
 // register custom indexer hook
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'][]
-    = 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';
+$customIndexerClassName = 'TeaminmediasPluswerk\KeSearchHooks\ExampleIndexer';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'][] = $customIndexerClassName;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'][] = $customIndexerClassName;
 
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'][]
-    = 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';
+//$_procObj = &TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($_classRef);
+//$_procObj->debugTest;
 
+//$debugTest = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TeaminmediasPluswerk\KeSearchHooks\ExampleIndexer::class);
+//$debugTest->debugTest();
+
+/*
 // register custom filter renderer hook
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customFilterRenderer'][]
     = 'EXT:ke_search_hooks/class.user_kesearchhooks.php:user_kesearchhooks';

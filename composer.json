@@ -1,0 +1,8 @@
+{
+  "name": "pluswerk/ke_search_hooks",
+  "type": "typo3-cms-extension",
+  "description": "Hooks example for ke_search. Feel free to use this as a kickstarter for your own custom indexer or hooks.",
+  "require": {
+    "teaminmedias-pluswerk/ke_search": "^2.6"
+  },
+}

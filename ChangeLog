@@ -1,3 +1,6 @@
+Version 2.0.1, November 2018
+[TASK]    Add an example on how to index more fields from the tt_content table by adding the "subheader" field to the index.
+
 Version 2.0.0, October 2017
 [FEATURE] Make extension compatible to TYPO3 8
 [FEATURE] Add example for custom indexer as a namespaced class

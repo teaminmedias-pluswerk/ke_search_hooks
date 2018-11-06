@@ -27,3 +27,8 @@ if (!defined("TYPO3_MODE")) {
 $customIndexerClassName = 'TeaminmediasPluswerk\KeSearchHooks\ExampleIndexer';
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'][] = $customIndexerClassName;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'][] = $customIndexerClassName;
+
+// register hooks for indexing additional fields
+$additionContentClassName = 'TeaminmediasPluswerk\KeSearchHooks\AdditionalContentFields';
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPageContentFields'][] = $additionContentClassName;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'][] = $additionContentClassName;

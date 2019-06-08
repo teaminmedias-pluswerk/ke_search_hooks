@@ -21,14 +21,14 @@ if (!defined("TYPO3_MODE")) {
     die("Access denied.");
 }
 
-// register custom indexer hook
-// adjust this to your namespace and class name
-// adjust the autoloading information in composer.json, too!
+// Register custom indexer hook.
+// Adjust this to your namespace and class name.
+// Adjust the autoloading information in composer.json, too!
 $customIndexerClassName = 'TeaminmediasPluswerk\KeSearchHooks\ExampleIndexer';
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'][] = $customIndexerClassName;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'][] = $customIndexerClassName;
 
-// register hooks for indexing additional fields
+// Register hooks for indexing additional fields.
 $additionContentClassName = 'TeaminmediasPluswerk\KeSearchHooks\AdditionalContentFields';
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPageContentFields'][] = $additionContentClassName;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'][] = $additionContentClassName;

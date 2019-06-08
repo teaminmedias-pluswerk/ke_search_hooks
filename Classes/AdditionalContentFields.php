@@ -18,13 +18,13 @@ class AdditionalContentFields {
 
     public function modifyPageContentFields(&$fields, $pageIndexer)
     {
-        // add field "subheader" from tt_content table which is normally not indexed to list of fields
+        // Add the field "subheader" from the tt_content table, which is normally not indexed, to the list of fields.
         $fields .= ",subheader";
     }
 
     public function modifyContentFromContentElement(string &$bodytext, array $ttContentRow, $pageIndexer)
     {
-        // add the content of the field "subheader" to $bodytext which is what will be saved to the index
+        // Add the content of the field "subheader" to $bodytext, which is, what will be saved to the index.
         $bodytext .= strip_tags($ttContentRow['subheader']);
     }
 

@@ -1,11 +1,11 @@
 <?php
 // Set you own vendor name.
-// Adjust the extension name part of the namespace to your extension key
+// Adjust the extension name part of the namespace to your extension key.
 namespace TeaminmediasPluswerk\KeSearchHooks;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-// set you own class name
+// Set you own class name.
 class ExampleIndexer
 {
     // Set a key for your indexer configuration.
@@ -33,7 +33,7 @@ class ExampleIndexer
 
 
     /**
-     * Custom indexer for ke_search
+     * Custom indexer for ke_search.
      *
      * @param   array $indexerConfig Configuration from TYPO3 Backend.
      * @param   array $indexerObject Reference to indexer class.
@@ -101,7 +101,7 @@ class ExampleIndexer
                     . '&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail';
 
                 // Tags
-                // If you use Sphinx, use "_" instead of "#" (configurable in the extension manager)
+                // If you use Sphinx, use "_" instead of "#" (configurable in the extension manager).
                 $tags = '#example_tag_1#,#example_tag_2#';
 
                 // Additional information
@@ -112,8 +112,8 @@ class ExampleIndexer
                     'sortdate' => $record['datetime'],
                 );
 
-                // add something to the title, just to identify the entries
-                // in the frontend
+                // Add something to the title, just to identify the entries
+                // in the frontend.
                 $title = '[CUSTOM INDEXER] ' . $title;
 
                 // ... and store the information in the index

@@ -1,14 +1,15 @@
 <?php
-// set you own vendor name adjust the extension name part of the namespace to your extension key
+// Set you own vendor name.
+// Adjust the extension name part of the namespace to your extension key.
 namespace TeaminmediasPluswerk\KeSearchHooks;
 
 /**
  * Class AdditionalContentFields
  * @package TeaminmediasPluswerk\KeSearchHooks
  *
- * This class is an example on how index more fields of the tt_content table without having to write a custom
+ * This class is an example on how to index more fields of the tt_content table without having to write a custom
  * indexer. The default page indexer is used. Two hooks are needed: One adds the field to the list of fields
- * fetched from the tt_content table, one adds the field to the content written to the index.
+ * fetched from the tt_content table, the other one adds the field to the content written to the index.
  *
  * See also ext_localconf.php on how to register the hooks.
  */

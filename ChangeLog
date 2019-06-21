@@ -1,3 +1,6 @@
+master
+[TASK]    Make extension compatible with TYPO3 9. Thanks to Robert Wildling. https://github.com/teaminmedias-pluswerk/ke_search_hooks/pull/6 and https://github.com/teaminmedias-pluswerk/ke_search_hooks/pull/7.
+
 Version 2.0.1, November 2018
 [TASK]    Add an example on how to index more fields from the tt_content table by adding the "subheader" field to the index.
 

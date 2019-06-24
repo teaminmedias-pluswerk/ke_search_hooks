@@ -73,7 +73,7 @@ class ExampleIndexer
             
             // Handle restrictions.
             $queryBuilder
-                ->getRestrictions
+                ->getRestrictions()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
 

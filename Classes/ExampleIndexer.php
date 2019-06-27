@@ -30,7 +30,7 @@ class ExampleIndexer
         $customIndexer = array(
             '[CUSTOM] News-Indexer (ext:news)',
             $this->indexerConfigurationKey,
-            ExtensionManagementUtility::extRelPath('ke_search_hooks') . 'customnews-indexer-icon.gif'
+            'EXT:ke_search_hooks/customnews-indexer-icon.gif'
         );
         $params['items'][] = $customIndexer;
     }

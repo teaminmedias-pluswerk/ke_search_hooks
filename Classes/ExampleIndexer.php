@@ -5,6 +5,7 @@ namespace TeaminmediasPluswerk\KeSearchHooks;
 
 use TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase;
 use TeaminmediasPluswerk\KeSearch\Indexer\IndexerRunner;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -49,6 +50,7 @@ class ExampleIndexer
             $table = 'tx_news_domain_model_news';
             
             // Doctrine DBAL using Connection Pool.
+            /** @var Connection $connection */
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
             $queryBuilder = $connection->createQueryBuilder();
             
@@ -61,15 +63,11 @@ class ExampleIndexer
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
 
+            $folders = GeneralUtility::trimExplode(',', htmlentities($indexerConfig['sysfolder']));
             $statement = $queryBuilder
                 ->select('*')
                 ->from($table)
-                ->where(
-                  $queryBuilder->expr()->in(
-                    'pid',
-                    $queryBuilder->createNamedParameter($indexerConfig['sysfolder'], \PDO::PARAM_INT)
-                  )
-                )
+                ->where($queryBuilder->expr()->in( 'pid', $folders))
                 ->execute();
 
             // Loop through the records and write them to the index.

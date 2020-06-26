@@ -1,6 +1,7 @@
 master
 
 Version 3.1.0, June 2020
+[TASK]    Respect multiple sysfolders in example indexer. Thanks to crohelt. https://github.com/teaminmedias-pluswerk/ke_search_hooks/issues/12
 [TASK]    Make extension compatible with TYPO3 10
 [TASK]    Increase version number to match git tag and ext_emconf.php version
 [TASK]    Code Cleanup

@@ -3,14 +3,14 @@
 // Adjust the extension name part of the namespace to your extension key.
 namespace TeaminmediasPluswerk\KeSearchHooks;
 
+use TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 // Set you own class name.
-class ExampleIndexer
+class ExampleIndexer extends IndexerBase
 {
     // Set a key for your indexer configuration.
     // Add this key to the $GLOBALS[...] array in Configuration/TCA/Overrides/tx_kesearch_indexerconfig.php, too!
@@ -22,7 +22,7 @@ class ExampleIndexer
      * new indexer configuration.
      *
      * @param array $params
-     * @param type $pObj
+     * @param object $pObj
      */
     public function registerIndexerConfiguration(&$params, $pObj)
     {
@@ -35,36 +35,16 @@ class ExampleIndexer
         $params['items'][] = $customIndexer;
     }
 
-
     /**
      * Custom indexer for ke_search.
      *
      * @param   array $indexerConfig Configuration from TYPO3 Backend.
      * @param   array $indexerObject Reference to indexer class.
      * @return  string Message containing indexed elements.
-     * @author  Christian Buelter <christian.buelter@pluswerk.ag>
      */
     public function customIndexer(&$indexerConfig, &$indexerObject)
     {
         if ($indexerConfig['type'] == $this->indexerConfigurationKey) {
-            $content = '';
-
-            // Get all the entries to index.
-            // Don't index hidden or deleted elements, but get the elements 
-            // with frontend user group access restrictions or time (start / stop)
-            // restrictions in order to copy those restrictions to the index.
-            //
-            // Since TYPO3 v8, database access is managed via the Doctrine DBAL layer using the Connection Pool class.
-            // The old TYPO3 Database wrapper TYPO3_DB is deprecated since TYPO3 v8 and removed since TYPO3 v9.
-            // See: https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Database/Migration/Index.html
-            //
-            // A standard connection automatically adds "restrtictions" to handle hidden, deleted, 
-            // time (start / stop), etc. fields of a record.
-            // See: https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Database/RestrictionBuilder/Index.html#database-restriction-builder
-            // To adhere to the principle metioned above, we first remove all restrictions and then add those again, 
-            // we want to keep: the "DeletedRestriction" and "HiddenRestriction".
-            
-            $fields = ['*']; // Array of table fields.
             $table = 'tx_news_domain_model_news';
             
             // Doctrine DBAL using Connection Pool.
@@ -72,13 +52,16 @@ class ExampleIndexer
             $queryBuilder = $connection->createQueryBuilder();
             
             // Handle restrictions.
+            // Don't fetch hidden or deleted elements, but the elements
+            // with frontend user group access restrictions or time (start / stop)
+            // restrictions in order to copy those restrictions to the index.
             $queryBuilder
                 ->getRestrictions()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
 
             $statement = $queryBuilder
-                ->select(...$fields)
+                ->select('*')
                 ->from($table)
                 ->where(
                   $queryBuilder->expr()->in(
@@ -110,7 +93,6 @@ class ExampleIndexer
 
                 // Additional information
                 $additionalFields = array(
-                    'sortdate' => $record['crdate'],
                     'orig_uid' => $record['uid'],
                     'orig_pid' => $record['pid'],
                     'sortdate' => $record['datetime'],
@@ -141,15 +123,11 @@ class ExampleIndexer
                 $counter++;
             }
 
-            $content =
-                '<p><b>Custom Indexer "'
+            $content = '<p><b>Custom Indexer "'
                 . $indexerConfig['title'] . '": ' . $counter
                 . ' Elements have been indexed.</b></p>';
 
-
             return $content;
         }
-        
     }
-
 }

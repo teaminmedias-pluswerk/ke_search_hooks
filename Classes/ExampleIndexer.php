@@ -4,6 +4,7 @@
 namespace TeaminmediasPluswerk\KeSearchHooks;
 
 use TeaminmediasPluswerk\KeSearch\Indexer\IndexerBase;
+use TeaminmediasPluswerk\KeSearch\Indexer\IndexerRunner;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -39,10 +40,10 @@ class ExampleIndexer extends IndexerBase
      * Custom indexer for ke_search.
      *
      * @param   array $indexerConfig Configuration from TYPO3 Backend.
-     * @param   array $indexerObject Reference to indexer class.
+     * @param   IndexerRunner $indexerObject Reference to indexer class.
      * @return  string Message containing indexed elements.
      */
-    public function customIndexer(&$indexerConfig, &$indexerObject)
+    public function customIndexer(array &$indexerConfig, IndexerRunner &$indexerObject): string
     {
         if ($indexerConfig['type'] == $this->indexerConfigurationKey) {
             $table = 'tx_news_domain_model_news';

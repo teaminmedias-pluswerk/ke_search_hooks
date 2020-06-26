@@ -21,14 +21,16 @@ if (!defined("TYPO3_MODE")) {
     die("Access denied.");
 }
 
-// Register custom indexer hook.
+// Register custom indexer.
 // Adjust this to your namespace and class name.
 // Adjust the autoloading information in composer.json, too!
-$customIndexerClassName = 'TeaminmediasPluswerk\KeSearchHooks\ExampleIndexer';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'][] = $customIndexerClassName;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'][] = $customIndexerClassName;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerIndexerConfiguration'][] =
+    \TeaminmediasPluswerk\KeSearchHooks\ExampleIndexer::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['customIndexer'][] =
+    \TeaminmediasPluswerk\KeSearchHooks\ExampleIndexer::class;
 
 // Register hooks for indexing additional fields.
-$additionContentClassName = 'TeaminmediasPluswerk\KeSearchHooks\AdditionalContentFields';
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPageContentFields'][] = $additionContentClassName;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'][] = $additionContentClassName;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPageContentFields'][] =
+    \TeaminmediasPluswerk\KeSearchHooks\AdditionalContentFields::class;
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'][] =
+    \TeaminmediasPluswerk\KeSearchHooks\AdditionalContentFields::class;

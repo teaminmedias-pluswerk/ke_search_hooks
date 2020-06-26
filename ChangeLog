@@ -1,4 +1,9 @@
 master
+
+Version 3.1.0, June 2020
+[TASK]    Make extension compatible with TYPO3 10
+[TASK]    Increase version number to match git tag and ext_emconf.php version
+[TASK]    Code Cleanup
 [TASK]    Make extension compatible with TYPO3 9. Thanks to Robert Wildling. https://github.com/teaminmedias-pluswerk/ke_search_hooks/pull/6 and https://github.com/teaminmedias-pluswerk/ke_search_hooks/pull/7.
 
 Version 2.0.1, November 2018

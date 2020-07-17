@@ -12,7 +12,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 // Set you own class name.
-class ExampleIndexer
+class ExampleIndexer extends IndexerBase
 {
     // Set a key for your indexer configuration.
     // Add this key to the $GLOBALS[...] array in Configuration/TCA/Overrides/tx_kesearch_indexerconfig.php, too!

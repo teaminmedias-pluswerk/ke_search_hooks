@@ -34,3 +34,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPageContentFields'][]
     \TeaminmediasPluswerk\KeSearchHooks\AdditionalContentFields::class;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'][] =
     \TeaminmediasPluswerk\KeSearchHooks\AdditionalContentFields::class;
+
+// Register Hook to check if a content element should be indexed
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['contentElementShouldBeIndexed'][] =
+    \TeaminmediasPluswerk\KeSearchHooks\AdditionalContentFields::class;

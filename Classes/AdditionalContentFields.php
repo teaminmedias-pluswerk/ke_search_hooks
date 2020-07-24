@@ -28,4 +28,9 @@ class AdditionalContentFields {
         $bodytext .= strip_tags($ttContentRow['subheader']);
     }
 
+    public function contentElementShouldBeIndexed($ttContentRow, $contentElementShouldBeIndexed, $pObj)
+    {
+        //debug($ttContentRow);
+        return $contentElementShouldBeIndexed;
+    }
 }

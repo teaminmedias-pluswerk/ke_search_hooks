@@ -1,6 +1,7 @@
 master
 
 Upcoming version
+[TASK]    Add example for hook contentElementShouldBeIndexed
 [TASK]    Fix link in documentation
 [TASK]    Extend ExampleIndexer from IndexerBase. See https://github.com/teaminmedias-pluswerk/ke_search/issues/358
 [TASK]    Require ke_search 3.1.6 because the instantiation of custom indexer classes changed

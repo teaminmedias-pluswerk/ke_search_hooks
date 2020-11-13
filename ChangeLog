@@ -1,11 +1,14 @@
 master
 
-Upcoming version
+Version 3.2.0, November 2020
 [TASK]    Add example for hook contentElementShouldBeIndexed
 [TASK]    Fix link in documentation
 [TASK]    Extend ExampleIndexer from IndexerBase. See https://github.com/teaminmedias-pluswerk/ke_search/issues/358
 [TASK]    Require ke_search 3.1.6 because the instantiation of custom indexer classes changed
 [TASK]    Add example for custom autosuggest provider (ke_search_premium feature)
+[TASK]    Use constant as indexer configuration key
+[TASK]    Remove restrictions in database query
+[TASK]    Simplify message after indexing
 
 Version 3.1.0, June 2020
 [TASK]    Respect multiple sysfolders in example indexer. Thanks to crohelt. https://github.com/teaminmedias-pluswerk/ke_search_hooks/issues/12

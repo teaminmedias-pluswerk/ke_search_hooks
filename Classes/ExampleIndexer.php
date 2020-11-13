@@ -16,7 +16,9 @@ class ExampleIndexer extends IndexerBase
 {
     // Set a key for your indexer configuration.
     // Add this key to the $GLOBALS[...] array in Configuration/TCA/Overrides/tx_kesearch_indexerconfig.php, too!
-    protected $indexerConfigurationKey = 'customindexer';
+    // It is recommended (but no must) to use the name of the table you are going to index as a key because this
+    // gives you the "original row" to work with in the result list template.
+    const KEY = 'tx_news_domain_model_news';
 
     /**
      * Adds the custom indexer to the TCA of indexer configurations, so that
@@ -31,7 +33,7 @@ class ExampleIndexer extends IndexerBase
         // Set a name and an icon for your indexer.
         $customIndexer = array(
             '[CUSTOM] News-Indexer (ext:news)',
-            $this->indexerConfigurationKey,
+            ExampleIndexer::KEY,
             'EXT:ke_search_hooks/customnews-indexer-icon.gif'
         );
         $params['items'][] = $customIndexer;
@@ -46,7 +48,7 @@ class ExampleIndexer extends IndexerBase
      */
     public function customIndexer(array &$indexerConfig, IndexerRunner &$indexerObject): string
     {
-        if ($indexerConfig['type'] == $this->indexerConfigurationKey) {
+        if ($indexerConfig['type'] == ExampleIndexer::KEY) {
             $table = 'tx_news_domain_model_news';
             
             // Doctrine DBAL using Connection Pool.
@@ -60,6 +62,7 @@ class ExampleIndexer extends IndexerBase
             // restrictions in order to copy those restrictions to the index.
             $queryBuilder
                 ->getRestrictions()
+                ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
 
@@ -105,7 +108,7 @@ class ExampleIndexer extends IndexerBase
                 $indexerObject->storeInIndex(
                     $indexerConfig['storagepid'],   // storage PID
                     $title,                         // record title
-                    $this->indexerConfigurationKey, // content type
+                    ExampleIndexer::KEY,            // content type
                     $indexerConfig['targetpid'],    // target PID: where is the single view?
                     $fullContent,                   // indexed content, includes the title (linebreak after title)
                     $tags,                          // tags for faceted search
@@ -122,9 +125,7 @@ class ExampleIndexer extends IndexerBase
                 $counter++;
             }
 
-            $content = '<p><b>Custom Indexer "'
-                . $indexerConfig['title'] . '": ' . $counter
-                . ' Elements have been indexed.</b></p>';
+            $content = $counter . ' Elements have been indexed.';
 
             return $content;
         }

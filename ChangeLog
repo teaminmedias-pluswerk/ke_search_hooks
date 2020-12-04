@@ -1,5 +1,8 @@
 master
 
+Upcoming version
+[TASK]    Add example for hook additionalResultMarker
+
 Version 3.2.0, November 2020
 [TASK]    Add example for hook contentElementShouldBeIndexed
 [TASK]    Fix link in documentation

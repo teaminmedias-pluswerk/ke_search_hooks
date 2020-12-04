@@ -35,10 +35,14 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyPageContentFields'][]
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['modifyContentFromContentElement'][] =
     \TeaminmediasPluswerk\KeSearchHooks\AdditionalContentFields::class;
 
-// Register Hook to check if a content element should be indexed
+// Register hook to check if a content element should be indexed
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['contentElementShouldBeIndexed'][] =
     \TeaminmediasPluswerk\KeSearchHooks\AdditionalContentFields::class;
 
-// Register Hook to add a custom autosuggest provider (ke_search_premium feature)
+// Register hook to add a custom autosuggest provider (ke_search_premium feature)
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search_premium']['modifyAutocompleWordList'][] =
     \TeaminmediasPluswerk\KeSearchHooks\AutosuggestProvider::class;
+
+// Register hook to
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'][] =
+    \TeaminmediasPluswerk\KeSearchHooks\AdditionalResulMarker::class;

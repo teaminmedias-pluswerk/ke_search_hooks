@@ -12,7 +12,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @package TeaminmediasPluswerk\KeSearchHooks
  */
-class AdditionalResulMarker {
+class AdditionalResultMarker {
 
     /**
      * @param array $tempMarkerArray

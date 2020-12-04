@@ -43,6 +43,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['contentElementShouldBeIndex
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search_premium']['modifyAutocompleWordList'][] =
     \TeaminmediasPluswerk\KeSearchHooks\AutosuggestProvider::class;
 
-// Register hook to
+// Register hook to add custom values to the result row partial
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'][] =
     \TeaminmediasPluswerk\KeSearchHooks\AdditionalResulMarker::class;

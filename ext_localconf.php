@@ -46,3 +46,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search_premium']['modifyAutocompleWor
 // Register hook to add custom values to the result row partial
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'][] =
     \TeaminmediasPluswerk\KeSearchHooks\AdditionalResultMarker::class;
+
+// Register hook to register additional fields in the index table
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'][] =
+    \TeaminmediasPluswerk\KeSearchHooks\AdditionalIndexerFields::class;

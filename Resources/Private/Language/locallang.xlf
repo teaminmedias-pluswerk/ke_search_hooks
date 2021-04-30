@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="EXT:ke_search_hooks/Resources/Private/Language/locallang.xlf" product-name="ke_search_hooks">
+        <header/>
+        <body>
+            <trans-unit id="tx_kesearch_index.mysorting">
+                <source>My sorting</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -100,6 +100,9 @@ class ExampleIndexer extends IndexerBase
                     'sortdate' => $record['datetime'],
                 );
 
+                // set custom sorting
+                $additionalFields['mysorting'] = $counter;
+
                 // Add something to the title, just to identify the entries
                 // in the frontend.
                 $title = '[CUSTOM INDEXER] ' . $title;

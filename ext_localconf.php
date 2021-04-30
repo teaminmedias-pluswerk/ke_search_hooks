@@ -48,5 +48,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['additionalResultMarker'][] 
     \TeaminmediasPluswerk\KeSearchHooks\AdditionalResultMarker::class;
 
 // Register hook to register additional fields in the index table
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'][] =
-    \TeaminmediasPluswerk\KeSearchHooks\AdditionalIndexerFields::class;
+// Make sure to set the values for the additional fields in *every indexer* you use
+//$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'][] =
+    //\TeaminmediasPluswerk\KeSearchHooks\AdditionalIndexerFields::class;

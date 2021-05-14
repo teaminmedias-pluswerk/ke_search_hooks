@@ -2,6 +2,7 @@ master
 
 Upcoming version
 [TASK]    Disable registering additional fields in ext_localconf.php since it will lead to errors if not every indexer is setting values for the additional fields.
+[TASK]    Add example how to use the "getOrdering" hook
 
 Version 3.3.0, April 2020
 [TASK]    Add example for hook additionalResultMarker

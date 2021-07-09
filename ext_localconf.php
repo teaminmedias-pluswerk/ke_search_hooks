@@ -55,3 +55,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['getOrdering'][] =
 // Make sure to set the values for the additional fields in *every indexer* you use
 //$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['registerAdditionalFields'][] =
     //\TeaminmediasPluswerk\KeSearchHooks\AdditionalIndexerFields::class;
+
+// Example for showing images of fe_users if you have implemented a fe_users indexer
+//$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['fileReferenceTypes']['fe_users']['table'] = 'fe_users';
+//$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ke_search']['fileReferenceTypes']['fe_users']['field'] = 'image';

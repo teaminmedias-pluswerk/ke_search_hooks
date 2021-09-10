@@ -1,11 +1,13 @@
 master
 
-Upcoming version
+Version 3.4.0, September 2021
+[!!!]     The namespace of ke_search has changed in version 4. Please use tpwd/ke_search_hooks if you use ke_search version 4 or higher.
+[TASK]    Mark extension as abandoned in composer.json.
 [TASK]    Disable registering additional fields in ext_localconf.php since it will lead to errors if not every indexer is setting values for the additional fields.
 [TASK]    Add example how to use the "getOrdering" hook
 [TASK]    Add extension key to composer.json
 
-Version 3.3.0, April 2020
+Version 3.3.0, April 2021
 [TASK]    Add example for hook additionalResultMarker
 [TASK]    Add example for adding a custom sorting option
 

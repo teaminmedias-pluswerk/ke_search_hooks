@@ -15,5 +15,6 @@
     "typo3/cms": {
       "extension-key": "ke_search_hooks"
     }
-  }
+  },
+  "abandoned": "tpwd/ke_search_hooks"
 }
